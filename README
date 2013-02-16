@@ -1,0 +1,15 @@
+FPGALINK JAVA BINDING (WORK IN PROGRESS!)
+
+This needs the Java Native Access jar:
+
+https://github.com/twall/jna
+https://maven.java.net/content/repositories/releases/net/java/dev/jna/jna/3.5.1/jna-3.5.1.jar
+
+It also needs a special build of the FPGALink libraries which include the $ORIGIN in RPATH.
+
+I have only tested on lin.x64.
+
+In summary: this is not yet really in a useable state.
+
+Chris McClelland
+2013-02-16
