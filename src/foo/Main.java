@@ -9,9 +9,8 @@ public class Main {
 
 	private static final String INIT_VIDPID = "04b4:8613";
 	private static final String ACTUAL_VIDPID = "1d50:602b:0009";
-	private static final String JTAG_CONFIG = "A7031";
-	private static final String XSVF_FILE = "/home/chris/libfpgalink-20121216/hdl/apps/makestuff/swled/cksum/vhdl/csvf/fx2min-lx9.csvf";
-	private static final String JNA_PATH = "lin.x64/rel";
+	private static final String PROG_CONFIG = "J:A7A0A3A1:../hdl/apps/makestuff/swled/cksum/vhdl/top_level.xsvf";
+	private static final String JNA_PATH = "/home/chris/makestuff/libs/libfpgalink/lin.x64/rel/";
 	
 	public static void main(String[] args) {
 		try {
@@ -24,7 +23,7 @@ public class Main {
 			}
 			catch ( FPGALinkException ex ) {
 				System.out.println("Loading firmware into " + INIT_VIDPID + "...");
-				FPGALink.loadStandardFirmware(INIT_VIDPID, ACTUAL_VIDPID, JTAG_CONFIG);
+				FPGALink.loadStandardFirmware(INIT_VIDPID, ACTUAL_VIDPID);
 				System.out.println("Awaiting renumeration as " + ACTUAL_VIDPID + "...");
 				if ( !FPGALink.awaitDevice(ACTUAL_VIDPID, 600) ) {
 					throw new FPGALinkException("FPGALink device did not renumerate properly as " + ACTUAL_VIDPID, -1);
@@ -32,8 +31,9 @@ public class Main {
 				System.out.println("Attempting to open connection to FPGALink device " + ACTUAL_VIDPID + " again...");
 				conn = FPGALink.open(ACTUAL_VIDPID);
 			}
-			System.out.println("Playing " + XSVF_FILE + " into the JTAG chain on FPGALink device " + ACTUAL_VIDPID + "...");
-			conn.playXSVF(XSVF_FILE);
+			System.out.println("Programming FPGA connected to FPGALink device " + ACTUAL_VIDPID + "...");
+			conn.program(PROG_CONFIG, null);
+			conn.fifoMode(1);
 
 			// Try raw read/write operations...
 			System.out.println("Trying raw reads/writes...");

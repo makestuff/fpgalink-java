@@ -16,11 +16,12 @@ public final class FPGALink {
 		void flClose(Pointer handle);
 
 		int flIsDeviceAvailable(String vp, ByteByReference isAvailable, PointerByReference pError);
-		int flPlayXSVF(Pointer handle, String xsvfFile, PointerByReference pError);
+		int flProgram(Pointer handle, String portConfig, String progFile, PointerByReference pError);
+		int flFifoMode(Pointer handle, byte fifoMode, PointerByReference pError);
 		
 		int flReadChannel(Pointer handle, int timeout, byte channel, int count, Pointer buffer, PointerByReference pError);
 		int flWriteChannel(Pointer handle, int timeout, byte channel, int count, Pointer data, PointerByReference pError);
-		int flLoadStandardFirmware(String curVidPid, String newVidPid, String jtagPort, PointerByReference pError);
+		int flLoadStandardFirmware(String curVidPid, String newVidPid, PointerByReference pError);
 		
 		void flSleep(int ms);
 	}
@@ -63,9 +64,14 @@ public final class FPGALink {
 			close();
 		}
 		
-		public void playXSVF(String xsvfFile) {
+		public void fifoMode(int mode) {
 			PointerByReference pError = new PointerByReference();
-			int retCode = LIB.flPlayXSVF(m_handle, xsvfFile, pError);
+			int retCode = LIB.flFifoMode(m_handle, (byte)mode, pError);
+			checkThrow(retCode, pError);
+		}
+		public void program(String progConfig, String progFile) {
+			PointerByReference pError = new PointerByReference();
+			int retCode = LIB.flProgram(m_handle, progConfig, progFile, pError);
 			checkThrow(retCode, pError);
 		}
 		public void rawReadChannel(int channel, Memory buffer, int count, int timeout) {
@@ -102,9 +108,9 @@ public final class FPGALink {
 		return new Connection(pHandle.getValue());
 	}
 	
-	public static void loadStandardFirmware(String curVidPid, String newVidPid, String jtagPort) {
+	public static void loadStandardFirmware(String curVidPid, String newVidPid) {
 		PointerByReference pError = new PointerByReference();
-		int retCode = LIB.flLoadStandardFirmware(curVidPid, newVidPid, jtagPort, pError);
+		int retCode = LIB.flLoadStandardFirmware(curVidPid, newVidPid, pError);
 		checkThrow(retCode, pError);
 	}
 	
