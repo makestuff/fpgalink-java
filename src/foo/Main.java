@@ -10,7 +10,7 @@ public class Main {
 	private static final String INIT_VIDPID = "04b4:8613";
 	private static final String ACTUAL_VIDPID = "1d50:602b:0009";
 	private static final String PROG_CONFIG = "J:A7A0A3A1:../hdl/apps/makestuff/swled/cksum/vhdl/top_level.xsvf";
-	private static final String JNA_PATH = "/home/chris/makestuff/libs/libfpgalink/lin.x64/rel/";
+	private static final String JNA_PATH = "../lin.x64/rel/";
 	
 	public static void main(String[] args) {
 		try {
