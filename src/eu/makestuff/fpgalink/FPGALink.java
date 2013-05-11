@@ -22,6 +22,8 @@ public final class FPGALink {
 		int flReadChannel(Pointer handle, int timeout, byte channel, int count, Pointer buffer, PointerByReference pError);
 		int flWriteChannel(Pointer handle, int timeout, byte channel, int count, Pointer data, PointerByReference pError);
 		int flLoadStandardFirmware(String curVidPid, String newVidPid, PointerByReference pError);
+
+		int flPortConfig(Pointer handle, String portConfig, PointerByReference pError);
 		
 		void flSleep(int ms);
 	}
@@ -97,6 +99,11 @@ public final class FPGALink {
 			}
 			m_buffer.write(0, buffer, offset, count);
 			rawWriteChannel(channel, m_buffer, count, timeout);
+		}
+		public void portConfig(String portConfig) {
+			PointerByReference pError = new PointerByReference();
+			int retCode = LIB.flPortConfig(m_handle, portConfig, pError);
+			checkThrow(retCode, pError);
 		}
 	}
 	
